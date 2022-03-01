@@ -92,6 +92,7 @@ function App() {
   )
 
   useEffect(() => {
+    // handle tutorial
     // if no game state on load,
     // show the user the how-to info modal
     if (!loadGameStateFromLocalStorage()) {
@@ -102,6 +103,7 @@ function App() {
   }, [])
 
   useEffect(() => {
+    // handle dark mode
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
     } else {
@@ -109,6 +111,7 @@ function App() {
     }
 
     if (isHighContrastMode) {
+      // handle high contrast mode
       document.documentElement.classList.add('high-contrast')
     } else {
       document.documentElement.classList.remove('high-contrast')
@@ -116,11 +119,13 @@ function App() {
   }, [isDarkMode, isHighContrastMode])
 
   const handleDarkMode = (isDark: boolean) => {
+    // control dark mode
     setIsDarkMode(isDark)
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }
 
   const handleHardMode = (isHard: boolean) => {
+    // control hard mode
     if (guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
       setIsHardMode(isHard)
       localStorage.setItem('gameMode', isHard ? 'hard' : 'normal')
@@ -130,6 +135,7 @@ function App() {
   }
 
   const handleHighContrastMode = (isHighContrast: boolean) => {
+    // control high cont
     setIsHighContrastMode(isHighContrast)
     setStoredIsHighContrastMode(isHighContrast)
   }
@@ -139,10 +145,12 @@ function App() {
   }
 
   useEffect(() => {
+    // save locally to reload
     saveGameStateToLocalStorage({ guesses, solution })
   }, [guesses])
 
   useEffect(() => {
+    // Assess end-state, lose/win
     if (isGameWon) {
       const winMessage =
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
