@@ -4,7 +4,7 @@ import { GAME_TITLE } from '../constants/strings'
 import { MAX_CHALLENGES } from '../constants/settings'
 
 export const shareStatus = (
-  guesses: string[],
+  guesses: number[][],
   lost: boolean,
   isHardMode: boolean,
   isDarkMode: boolean,
@@ -18,12 +18,11 @@ export const shareStatus = (
   )
 }
 
-export const generateEmojiGrid = (guesses: string[], tiles: string[]) => {
+export const generateEmojiGrid = (guesses: number[][], tiles: string[]) => {
   return guesses
     .map((guess) => {
       const status = getGuessStatuses(guess)
       return guess
-        .split('')
         .map((_, i) => {
           switch (status[i]) {
             case 'correct':

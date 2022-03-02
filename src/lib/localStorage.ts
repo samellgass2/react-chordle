@@ -2,8 +2,8 @@ const gameStateKey = 'gameState'
 const highContrastKey = 'highContrast'
 
 type StoredGameState = {
-  guesses: string[]
-  solution: string
+  guesses: number[][]
+  solution: number[]
 }
 
 export const saveGameStateToLocalStorage = (gameState: StoredGameState) => {

@@ -4,6 +4,9 @@ import { Keyboard } from './components/keyboard/Keyboard'
 import { InfoModal } from './components/modals/InfoModal'
 import { StatsModal } from './components/modals/StatsModal'
 import { SettingsModal } from './components/modals/SettingsModal'
+import { NOTENAME_TO_NUM } from './constants/musicalnotation'
+import { validate_guess } from './constants/validGuesses'
+
 import {
   WIN_MESSAGES,
   GAME_COPIED_MESSAGE,
@@ -47,7 +50,7 @@ function App() {
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
-  const [currentGuess, setCurrentGuess] = useState('')
+  const [currentGuess, setCurrentGuess] = useState([] as number[])
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
@@ -64,8 +67,10 @@ function App() {
   const [isHighContrastMode, setIsHighContrastMode] = useState(
     getStoredIsHighContrastMode()
   )
+
   const [isRevealing, setIsRevealing] = useState(false)
-  const [guesses, setGuesses] = useState<string[]>(() => {
+  //const [guesses, setGuesses] = useState(new Array<number[]>())
+  const [guesses, setGuesses] = useState<number[][]>(() => {
     const loaded = loadGameStateFromLocalStorage()
     if (loaded?.solution !== solution) {
       return []
@@ -144,6 +149,7 @@ function App() {
     setCurrentRowClass('')
   }
 
+  //More game state abstracted away
   useEffect(() => {
     // save locally to reload
     saveGameStateToLocalStorage({ guesses, solution })
@@ -171,18 +177,16 @@ function App() {
 
   const onChar = (value: string) => {
     if (
-      unicodeLength(`${currentGuess}${value}`) <= MAX_WORD_LENGTH &&
+      currentGuess.length + 1 <= MAX_WORD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
-      setCurrentGuess(`${currentGuess}${value}`)
+      setCurrentGuess(currentGuess.concat(NOTENAME_TO_NUM.get(value)))
     }
   }
 
   const onDelete = () => {
-    setCurrentGuess(
-      new GraphemeSplitter().splitGraphemes(currentGuess).slice(0, -1).join('')
-    )
+    setCurrentGuess(currentGuess.slice(0, -1))
   }
 
   const onEnter = () => {
@@ -190,30 +194,31 @@ function App() {
       return
     }
 
-    if (!(unicodeLength(currentGuess) === MAX_WORD_LENGTH)) {
+    if (!(currentGuess.length === MAX_WORD_LENGTH)) {
       setCurrentRowClass('jiggle')
       return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
         onClose: clearCurrentRowClass,
       })
     }
 
-    if (!isWordInWordList(currentGuess)) {
+    if (!validate_guess(currentGuess)) {
       setCurrentRowClass('jiggle')
       return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
         onClose: clearCurrentRowClass,
       })
     }
 
-    // enforce hard mode - all guesses must contain all previously revealed letters
-    if (isHardMode) {
-      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
-      if (firstMissingReveal) {
-        setCurrentRowClass('jiggle')
-        return showErrorAlert(firstMissingReveal, {
-          onClose: clearCurrentRowClass,
-        })
-      }
-    }
+    // TODO : FIX HARD MODE
+    // // enforce hard mode - all guesses must contain all previously revealed letters
+    // if (isHardMode) {
+    //   const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
+    //   if (firstMissingReveal) {
+    //     setCurrentRowClass('jiggle')
+    //     return showErrorAlert(firstMissingReveal, {
+    //       onClose: clearCurrentRowClass,
+    //     })
+    //   }
+    // }
 
     setIsRevealing(true)
     // turn this back off after all
@@ -225,12 +230,12 @@ function App() {
     const winningWord = isWinningWord(currentGuess)
 
     if (
-      unicodeLength(currentGuess) === MAX_WORD_LENGTH &&
+      currentGuess.length === MAX_WORD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
       setGuesses([...guesses, currentGuess])
-      setCurrentGuess('')
+      setCurrentGuess([])
 
       if (winningWord) {
         setStats(addStatsForCompletedGame(stats, guesses.length))

@@ -3,26 +3,25 @@ import { solution, unicodeSplit } from './words'
 export type CharStatus = 'absent' | 'present' | 'correct'
 
 export const getStatuses = (
-  guesses: string[]
-): { [key: string]: CharStatus } => {
-  const charObj: { [key: string]: CharStatus } = {}
-  const splitSolution = unicodeSplit(solution)
+  guesses: number[][]
+): { [key: number]: CharStatus } => {
+  const charObj: { [key: number]: CharStatus } = {}
 
-  guesses.forEach((word) => {
-    unicodeSplit(word).forEach((letter, i) => {
-      if (!splitSolution.includes(letter)) {
+  guesses.forEach((chord) => {
+    chord.forEach((note, i) => {
+      if (!solution.includes(note)) {
         // make status absent
-        return (charObj[letter] = 'absent')
+        return (charObj[note] = 'absent')
       }
 
-      if (letter === splitSolution[i]) {
+      if (note === solution[i]) {
         //make status correct
-        return (charObj[letter] = 'correct')
+        return (charObj[note] = 'correct')
       }
 
-      if (charObj[letter] !== 'correct') {
+      if (charObj[note] !== 'correct') {
         //make status present
-        return (charObj[letter] = 'present')
+        return (charObj[note] = 'present')
       }
     })
   })
@@ -30,35 +29,33 @@ export const getStatuses = (
   return charObj
 }
 
-export const getGuessStatuses = (guess: string): CharStatus[] => {
-  const splitSolution = unicodeSplit(solution)
-  const splitGuess = unicodeSplit(guess)
+export const getGuessStatuses = (guess: number[]): CharStatus[] => {
 
-  const solutionCharsTaken = splitSolution.map((_) => false)
+  const solutionCharsTaken = solution.map((_) => false)
 
   const statuses: CharStatus[] = Array.from(Array(guess.length))
 
   // handle all correct cases first
-  splitGuess.forEach((letter, i) => {
-    if (letter === splitSolution[i]) {
+  guess.forEach((note, i) => {
+    if (note === solution[i]) {
       statuses[i] = 'correct'
       solutionCharsTaken[i] = true
       return
     }
   })
 
-  splitGuess.forEach((letter, i) => {
+  guess.forEach((note, i) => {
     if (statuses[i]) return
 
-    if (!splitSolution.includes(letter)) {
+    if (!solution.includes(note)) {
       // handles the absent case
       statuses[i] = 'absent'
       return
     }
 
     // now we are left with "present"s
-    const indexOfPresentChar = splitSolution.findIndex(
-      (x, index) => x === letter && !solutionCharsTaken[index]
+    const indexOfPresentChar = solution.findIndex(
+      (x, index) => x === note && !solutionCharsTaken[index]
     )
 
     if (indexOfPresentChar > -1) {

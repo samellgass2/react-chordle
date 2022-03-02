@@ -3,12 +3,14 @@ import { Key } from './Key'
 import { useEffect } from 'react'
 import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
 import { localeAwareUpperCase } from '../../lib/words'
+import { NOTENAME_TO_NUM } from '../../constants/musicalnotation'
+
 
 type Props = {
   onChar: (value: string) => void
   onDelete: () => void
   onEnter: () => void
-  guesses: string[]
+  guesses: number[][]
   isRevealing?: boolean
 }
 
@@ -22,9 +24,10 @@ export const Keyboard = ({
   const charStatuses = getStatuses(guesses)
 
   const onClick = (value: string) => {
-    if (value === 'ENTER') {
+    
+    if (value === "ENTER") { 
       onEnter()
-    } else if (value === 'DELETE') {
+    } else if (value === "DELETE") { 
       onDelete()
     } else {
       onChar(value)
@@ -51,6 +54,8 @@ export const Keyboard = ({
     }
   }, [onEnter, onDelete, onChar])
 
+
+
   return (
     <div>
       <div className="flex justify-center mb-1">
@@ -59,7 +64,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={charStatuses[NOTENAME_TO_NUM.get(key)]}
             isRevealing={isRevealing}
           />
         ))}
@@ -69,7 +74,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={charStatuses[NOTENAME_TO_NUM.get(key)]}
             isRevealing={isRevealing}
           />
         ))}       
@@ -79,7 +84,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={charStatuses[NOTENAME_TO_NUM.get(key)]}
             isRevealing={isRevealing}
           />
         ))}  
@@ -89,7 +94,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={charStatuses[NOTENAME_TO_NUM.get(key)]}
             isRevealing={isRevealing}
           />
         ))}  
@@ -101,7 +106,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={charStatuses[NOTENAME_TO_NUM.get(key)]}
             isRevealing={isRevealing}
           />
         ))}

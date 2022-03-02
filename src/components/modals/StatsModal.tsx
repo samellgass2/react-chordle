@@ -15,7 +15,7 @@ import {
 type Props = {
   isOpen: boolean
   handleClose: () => void
-  guesses: string[]
+  guesses: number[][]
   gameStats: GameStats
   isGameLost: boolean
   isGameWon: boolean
