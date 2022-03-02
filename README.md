@@ -7,7 +7,7 @@ A version of the popular 'wordle' word-guessing game for music nerds : only vali
 Clone the repository and perform the following command line actions:
 
 ```bash
-$> cd react-wordle
+$> cd react-chordle
 $> npm install
 $> npm run start
 ```

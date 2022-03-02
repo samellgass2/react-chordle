@@ -10,8 +10,14 @@ export const validate_guess = (guess : number[]) => {
   var mutable = [...guess]
 
   // First, make chord relative to root and reduce to one octave
+  var seen = new Set()
   const root = Math.min(...guess)
   for (let i = 0; i < mutable.length; i++) {
+    if (seen.has(mutable[i])) {
+      return false;
+    } else {
+      seen.add(mutable[i])
+    } // Check for duplicates before modification
     mutable[i] = (mutable[i]-root) % 12
   }
 
