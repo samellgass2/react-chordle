@@ -20,7 +20,9 @@ export const validate_guess = (guess : number[]) => {
     return mutable.indexOf(note) == position
   })
 
-  simplified.sort()
+  simplified.sort(function(a, b) {
+    return a - b;
+  })
 
   let chrdstr = JSON.stringify(simplified)
 

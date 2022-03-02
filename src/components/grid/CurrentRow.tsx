@@ -1,7 +1,7 @@
 import { MAX_WORD_LENGTH } from '../../constants/settings'
 import { Cell } from './Cell'
 import { unicodeSplit } from '../../lib/words'
-import { NOTENAME_TO_NUM } from '../../constants/musicalnotation'
+import { NOTENAME_TO_NUM, NUM_TO_NOTENAME } from '../../constants/musicalnotation'
 
 type Props = {
   guess: number[]
@@ -15,7 +15,7 @@ export const CurrentRow = ({ guess, className }: Props) => {
   return (
     <div className={classes}>
       {guess.map((note, i) => (
-        <Cell key={i} value={String(note)} />
+        <Cell key={i} value={NUM_TO_NOTENAME.get(note)} />
       ))}
       {emptyCells.map((_, i) => (
         <Cell key={i} />

@@ -200,7 +200,7 @@ function App() {
         onClose: clearCurrentRowClass,
       })
     }
-
+    //WORD_NOT_FOUND_MESSAGE
     if (!validate_guess(currentGuess)) {
       setCurrentRowClass('jiggle')
       return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {

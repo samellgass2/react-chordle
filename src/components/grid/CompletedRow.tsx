@@ -17,7 +17,7 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
       {guess.map((note, i) => (
         <Cell
           key={i}
-          value={String(note)}
+          value={NUM_TO_NOTENAME.get(note)}
           status={statuses[i]}
           position={i}
           isRevealing={isRevealing}
