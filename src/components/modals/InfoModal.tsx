@@ -10,62 +10,57 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        Guess the word in 6 tries. After each guess, the color of the tiles will
-        change to show how close your guess was to the word.
+        Guess the chord in 5 tries. After each guess, the color of the tiles will
+        change to show how close your guess was to the chord.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
         <Cell
           isRevealing={true}
           isCompleted={true}
-          value="W"
+          value="C3"
           status="correct"
         />
-        <Cell value="E" />
-        <Cell value="A" />
-        <Cell value="R" />
-        <Cell value="Y" />
+        <Cell value="E3" />
+        <Cell value="G3" />
+        <Cell value="C4" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter W is in the word and in the correct spot.
+        The note C3 is in the chord in the correct spot, as the bass.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="P" />
-        <Cell value="I" />
+        <Cell value="D3" />
         <Cell
           isRevealing={true}
           isCompleted={true}
-          value="L"
+          value="F#3"
           status="present"
         />
-        <Cell value="O" />
-        <Cell value="T" />
+        <Cell value="A3" />
+        <Cell value="C4" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter L is in the word but in the wrong spot.
+        The note F#3 is in the chord, but is not that member of the chord.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="V" />
-        <Cell value="A" />
-        <Cell value="G" />
-        <Cell isRevealing={true} isCompleted={true} value="U" status="absent" />
-        <Cell value="E" />
+        <Cell value="B2" />
+        <Cell value="G3" />
+        <Cell isRevealing={true} isCompleted={true} value="D3" status="absent" />
+        <Cell value="F3" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter U is not in the word in any spot.
+        The note D3 is not in the chord at all.
+      </p>
+      &nbsp;
+      <p className="text-sm text-gray-500 dark:text-gray-300">
+      You may guess any valid four-note chord,
+        in any inversion.
       </p>
 
       <p className="mt-6 italic text-sm text-gray-500 dark:text-gray-300">
-        This is an open source version of the word guessing game we all know and
-        love -{' '}
-        <a
-          href="https://github.com/cwackerfuss/react-wordle"
-          className="underline font-bold"
-        >
-          check out the code here
-        </a>{' '}
+        This game is still a work in progress, thanks for checking it out!
       </p>
     </BaseModal>
   )
